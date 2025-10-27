@@ -6,6 +6,7 @@ import { UserModule } from '../user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from 'src/config/configuration';
 import { MongooseModule } from '@nestjs/mongoose';
+import { Seller, SellerSchema, User, UserSchema } from 'src/models';
 
 @Module({
   imports: [
@@ -19,6 +20,19 @@ import { MongooseModule } from '@nestjs/mongoose';
         };
       },
     }),
+    // To register the user model in the database
+    MongooseModule.forFeature([
+      {
+        name: User.name,
+        schema: UserSchema,
+        discriminators: [
+          {
+            name: Seller.name,
+            schema: SellerSchema,
+          },
+        ],
+      },
+    ]),
     ConfigModule.forRoot({
       // To globally access the config module
       isGlobal: true,

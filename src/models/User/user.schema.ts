@@ -24,11 +24,19 @@ export class User implements IUser {
   @Prop({ required: false, default: undefined })
   otp?: string;
   @Prop({ required: false, default: undefined })
-  otpExpiry?: Date | undefined;
+  otpExpiry?: Date;
   @Prop({ required: false, default: undefined })
-  credentialsUpdatedAt?: Date | undefined;
+  credentialsUpdatedAt?: Date;
   @Prop({ required: true, default: false })
   isVerified: boolean;
+  @Prop({ required: false, default: false })
+  isEmailVerified: boolean;
+  @Prop({ required: false, default: false })
+  isPhoneVerified: boolean;
+  @Prop({ required: false, default: false })
+  isAddressVerified: boolean;
+  @Prop({ required: false, default: undefined })
+  avatar: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
