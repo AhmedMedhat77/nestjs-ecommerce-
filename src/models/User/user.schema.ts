@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IUser, ROLE_ENUM } from 'src/types';
+import { ObjectId } from 'mongoose';
+import { ROLE_ENUM } from 'src/types';
 
 @Schema({
   timestamps: true,
@@ -8,16 +9,18 @@ import { IUser, ROLE_ENUM } from 'src/types';
   // the user role
   discriminatorKey: 'role',
 })
-export class User implements IUser {
+export class User {
+  // add user id as readonly
+  readonly _id: ObjectId;
   @Prop({ required: true, unique: true, lowercase: true })
   email: string;
   @Prop({ required: true })
   password: string;
   @Prop({ required: true })
   fullname: string;
-  @Prop({ required: true })
+  @Prop({ required: false, default: '' })
   phone: string;
-  @Prop({ required: true })
+  @Prop({ required: false, default: '' })
   address: string;
   @Prop({ required: true, enum: ROLE_ENUM, default: ROLE_ENUM.USER })
   role: ROLE_ENUM;

@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
+import { UserMongoModule } from '@shared/index';
 
 @Module({
-  imports: [],
+  imports: [UserMongoModule],
   controllers: [UserController],
   providers: [UserService],
   exports: [UserService],

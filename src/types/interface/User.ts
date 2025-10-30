@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongoose';
 import { ROLE_ENUM } from '../enums';
 
 export interface IUser {

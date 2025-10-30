@@ -3,6 +3,6 @@ export default () => ({
   database: {
     url: process.env.DB_URL,
   },
-  token: process.env.TOKEN_SECRET,
+  TOKEN_SECRET: process.env.TOKEN_SECRET,
   NODE_ENV: process.env.NODE_ENV,
 });
