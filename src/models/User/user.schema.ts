@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ObjectId } from 'mongoose';
-import { ROLE_ENUM } from 'src/types';
+import { PLATFORM_ENUM, ROLE_ENUM } from 'src/types';
 
 @Schema({
   timestamps: true,
@@ -40,6 +40,8 @@ export class User {
   isAddressVerified: boolean;
   @Prop({ required: false, default: undefined })
   avatar: string;
+  @Prop({ required: false, enum: PLATFORM_ENUM, default: PLATFORM_ENUM.LOCAL })
+  platform: PLATFORM_ENUM;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -8,3 +8,8 @@ export enum ROLE_ENUM {
   HR = 'hr',
   ACCOUNTANT = 'accountant',
 }
+
+export enum PLATFORM_ENUM {
+  LOCAL = 'local',
+  GOOGLE = 'google',
+}

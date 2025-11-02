@@ -8,6 +8,7 @@ import { RegisterCustomerFactory } from './factory/registerFactory';
 import { VerifyFactory } from './factory/verifyFactory';
 import { LoginFactory } from './factory/loginFactory';
 import { TokenService } from 'src/utils/token';
+import { ResetPasswordFactory } from './factory/reset-password.factory';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { TokenService } from 'src/utils/token';
     VerifyFactory,
     LoginFactory,
     TokenService,
+    ResetPasswordFactory,
   ],
   exports: [AuthService],
 })

@@ -9,13 +9,16 @@ import {
 import { RegisterDTO } from './dto/register.dto';
 import { RegisterCustomerFactory } from './factory/registerFactory';
 import { User, UserRepository } from '@models/index';
-import { comparePassword, sendEmail } from 'src/utils';
+import { comparePassword, generateOTP, sendEmail } from 'src/utils';
 import { VerifyOtpDTO } from './dto/verifyOTP.dto';
 import { VerifyFactory } from './factory/verifyFactory';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDTO } from './dto/login.dto';
 import { LoginFactory } from './factory/loginFactory';
 import { TokenService } from 'src/utils/token';
+import { ForgotPasswordDTO } from './dto/forgot-password.dto';
+import { ResetPasswordDTO } from './dto/reset-password.dto';
+import { ResetPasswordFactory } from './factory/reset-password.factory';
 
 @Injectable()
 export class AuthService {
@@ -25,6 +28,7 @@ export class AuthService {
     private readonly verifyFactory: VerifyFactory,
     private readonly loginFactory: LoginFactory,
     private readonly tokenService: TokenService,
+    private readonly resetPasswordFactory: ResetPasswordFactory,
   ) {}
   async register(registerDTO: RegisterDTO): Promise<Partial<User>> {
     const user = await this.registerCustomerFactory.createUser(registerDTO);
@@ -149,6 +153,75 @@ export class AuthService {
     return {
       token,
       user: userData,
+    };
+  }
+  async forgotPassword(forgotPasswordDto: ForgotPasswordDTO) {
+    const user = await this.userRepository.findOne({
+      email: forgotPasswordDto.email,
+    });
+    // 1.1 check if user exists
+    if (!user) {
+      throw new NotFoundException('Invalid email');
+    }
+    // 1.2 check is email is verified and for current user
+    if (!user.isEmailVerified) {
+      throw new BadRequestException('Email not verified');
+    }
+    // 1.3 Send email with OTP to reset password
+    const otp = generateOTP(5);
+    await this.userRepository.findOneAndUpdate(
+      { email: user.email },
+      { $set: { otp, otpExpiry: new Date(Date.now() + 10 * 60 * 1000) } },
+    );
+    try {
+      await sendEmail({
+        from: 'E-commerce <noreply@e-commerce.com>',
+        to: user.email,
+        subject: 'Reset Password',
+        text: `Your OTP is ${otp}. It will expire in ${new Date(user.otpExpiry || new Date()).getTime() - new Date().getTime()} minutes.`,
+      });
+    } catch (error: unknown) {
+      throw new InternalServerErrorException('Failed to send email');
+    }
+    return {
+      message: 'OTP sent to email',
+      success: true,
+    };
+  }
+  async resetPassword(resetPasswordDto: ResetPasswordDTO) {
+    const FactoryUser =
+      await this.resetPasswordFactory.resetPassword(resetPasswordDto);
+
+    // 1.1 check if user exists
+    const user = await this.userRepository.findOne({
+      email: FactoryUser.email,
+    });
+    if (!user) {
+      throw new NotFoundException('Invalid email');
+    }
+    // 1.2 check if OTP is correct
+    if (user.otp !== FactoryUser.otp) {
+      throw new BadRequestException('Invalid OTP');
+    }
+    // 1.3 check if OTP has expired
+    if (FactoryUser.otpExpiry && FactoryUser.otpExpiry < new Date()) {
+      throw new BadRequestException('OTP has expired');
+    }
+    // 1.4 update user password
+    await this.userRepository.findOneAndUpdate(
+      { email: FactoryUser.email },
+      {
+        $set: {
+          password: FactoryUser.password,
+          credentialsUpdatedAt: new Date(),
+          otp: undefined,
+          otpExpiry: undefined,
+        },
+      },
+    );
+    return {
+      message: 'Password reset successfully',
+      success: true,
     };
   }
 }
