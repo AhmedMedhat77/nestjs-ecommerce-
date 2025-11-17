@@ -3,3 +3,6 @@ export * from './User/user.schema';
 
 export * from './seller/seller.repository';
 export * from './seller/seller.schema';
+
+export * from './Product/product.repository';
+export * from './Product/product.schema';

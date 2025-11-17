@@ -27,7 +27,8 @@
       "@modules/*": ["src/modules/*"],
       "@shared/*": ["src/shared/*"],
       "@types/*": ["src/types/*"],
-      "@common/*":["src/common/*"]
+      "@common/*":["src/common/*"],
+      "@decorators/*":["src/decorators/*"]
     }
   }
 }

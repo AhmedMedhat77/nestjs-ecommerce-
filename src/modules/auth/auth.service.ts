@@ -224,4 +224,26 @@ export class AuthService {
       success: true,
     };
   }
+
+  async googleLogin(user: any) {
+    // Generate token for Google authenticated user
+    const token = await this.tokenService.generateToken(user);
+    // Handle both Mongoose document and plain object
+    const userObject = user.toObject ? user.toObject() : user;
+    const {
+      password,
+      otp,
+      otpExpiry,
+      credentialsUpdatedAt,
+      isVerified,
+      isEmailVerified,
+      isPhoneVerified,
+      isAddressVerified,
+      ...userData
+    } = userObject;
+    return {
+      token,
+      user: userData,
+    };
+  }
 }

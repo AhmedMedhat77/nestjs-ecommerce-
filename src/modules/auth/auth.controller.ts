@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -15,6 +16,7 @@ import { LoginDTO } from './dto/login.dto';
 import { ForgotPasswordDTO } from './dto/forgot-password.dto';
 import { AuthGuard } from '@common/guards';
 import { ResetPasswordDTO } from './dto/reset-password.dto';
+import { AuthGuard as PassportAuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 // @UseFilters(HttpExceptionFilter)
@@ -53,5 +55,25 @@ export class AuthController {
   @Post('reset-password')
   async resetPassword(@Body() resetPasswordDto: ResetPasswordDTO) {
     return await this.authService.resetPassword(resetPasswordDto);
+  }
+
+  @Get('google')
+  @UseGuards(PassportAuthGuard('google'))
+  async googleAuth() {
+    // This route initiates Google OAuth flow
+    // Passport will redirect to Google
+  }
+
+  @Get('google/callback')
+  @UseGuards(PassportAuthGuard('google'))
+  async googleAuthCallback(@Req() req: any) {
+    const { token, user } = await this.authService.googleLogin(req.user);
+    return {
+      message: 'Login successful',
+      data: {
+        token,
+        user,
+      },
+    };
   }
 }

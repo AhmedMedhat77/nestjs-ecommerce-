@@ -9,11 +9,16 @@ import { VerifyFactory } from './factory/verifyFactory';
 import { LoginFactory } from './factory/loginFactory';
 import { TokenService } from 'src/utils/token';
 import { ResetPasswordFactory } from './factory/reset-password.factory';
+import { PassportModule } from '@nestjs/passport';
+import GoogleStrategy from 'src/stragies/google.stratgy';
+import googleAuthConfig from '@config/google-auth-config';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     UserMongoModule,
-
+    PassportModule,
+    ConfigModule.forFeature(googleAuthConfig),
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
@@ -33,7 +38,8 @@ import { ResetPasswordFactory } from './factory/reset-password.factory';
     LoginFactory,
     TokenService,
     ResetPasswordFactory,
+    GoogleStrategy,
   ],
-  exports: [AuthService],
+  exports: [AuthService, JwtModule],
 })
 export class AuthModule {}
