@@ -29,7 +29,11 @@ export class CreateProductDto {
 
   @IsString()
   @IsOptional()
-  category?: string;
+  categoryId?: string;
+
+  @IsString()
+  @IsOptional()
+  brandId?: string;
 
   @IsArray()
   @IsString({ each: true })

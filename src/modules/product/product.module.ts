@@ -6,11 +6,15 @@ import { AuthModule } from '@modules/auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Product, ProductSchema } from '@models/Product/product.schema';
 import { ProductRepository } from '@models/Product/product.repository';
+import { CategoryModule } from '@modules/category/category.module';
+import { BrandModule } from '@modules/brand/brand.module';
 
 @Module({
   imports: [
     UserMongoModule,
     AuthModule,
+    CategoryModule,
+    BrandModule,
     MongooseModule.forFeature([
       {
         name: Product.name,

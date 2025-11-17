@@ -27,8 +27,11 @@ export class Product {
   @Prop({ required: false, type: [String], default: [] })
   images: string[];
 
-  @Prop({ required: false, type: String })
-  category?: string;
+  @Prop({ required: false, type: Types.ObjectId, ref: 'Category' })
+  categoryId?: Types.ObjectId;
+
+  @Prop({ required: false, type: Types.ObjectId, ref: 'Brand' })
+  brandId?: Types.ObjectId;
 
   @Prop({ required: false, type: [String], default: [] })
   tags: string[];
