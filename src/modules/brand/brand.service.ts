@@ -1,13 +1,12 @@
+import { BrandRepository } from '@models/Brand/brand.repository';
 import {
+  ConflictException,
   Injectable,
   NotFoundException,
-  ConflictException,
 } from '@nestjs/common';
+import { Types } from 'mongoose';
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
-import { BrandRepository } from '@models/Brand/brand.repository';
-import { Brand } from '@models/Brand/brand.schema';
-import { Types } from 'mongoose';
 
 @Injectable()
 export class BrandService {
@@ -84,4 +83,3 @@ export class BrandService {
     return await this.brandRepository.deleteById(new Types.ObjectId(id) as any);
   }
 }
-

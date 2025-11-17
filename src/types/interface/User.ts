@@ -2,6 +2,7 @@ import { ObjectId } from 'mongoose';
 import { ROLE_ENUM } from '../enums';
 
 export interface IUser {
+  readonly _id: ObjectId;
   email: string;
   password: string;
   fullname: string;

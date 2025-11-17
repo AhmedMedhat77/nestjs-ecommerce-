@@ -13,8 +13,9 @@ import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { AuthGuard, RolesGuard } from '@common/guards';
-import { Roles } from 'src/decorators';
+import { Roles, User } from 'src/decorators';
 import { ROLE_ENUM } from 'src/types/enums';
+import { IUser } from 'src/types/interface';
 
 @Controller('category')
 @UseGuards(AuthGuard, RolesGuard)
@@ -53,8 +54,12 @@ export class CategoryController {
 
   @Patch(':id')
   @Roles(ROLE_ENUM.ADMIN, ROLE_ENUM.SELLER)
-  update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
-    return this.categoryService.update(id, updateCategoryDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateCategoryDto: UpdateCategoryDto,
+    @User() user: Partial<IUser>,
+  ) {
+    return this.categoryService.update(id, updateCategoryDto, user);
   }
 
   @Delete(':id')
@@ -63,4 +68,3 @@ export class CategoryController {
     return this.categoryService.remove(id);
   }
 }
-

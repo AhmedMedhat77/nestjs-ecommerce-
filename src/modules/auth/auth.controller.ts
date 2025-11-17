@@ -14,7 +14,6 @@ import { AuthService } from './auth.service';
 import { VerifyOtpDTO } from './dto/verifyOTP.dto';
 import { LoginDTO } from './dto/login.dto';
 import { ForgotPasswordDTO } from './dto/forgot-password.dto';
-import { AuthGuard } from '@common/guards';
 import { ResetPasswordDTO } from './dto/reset-password.dto';
 import { AuthGuard as PassportAuthGuard } from '@nestjs/passport';
 

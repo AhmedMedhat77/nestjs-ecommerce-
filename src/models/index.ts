@@ -12,3 +12,6 @@ export * from './Category/category.schema';
 
 export * from './Brand/brand.repository';
 export * from './Brand/brand.schema';
+
+export * from './Cart/cart.repository';
+export * from './Cart/cart.schema';

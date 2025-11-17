@@ -8,12 +8,11 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CategoryRepository } from '@models/Category/category.repository';
 import { Category } from '@models/Category/category.schema';
 import { Types } from 'mongoose';
+import { IUser } from 'src/types/interface';
 
 @Injectable()
 export class CategoryService {
-  constructor(
-    private readonly categoryRepository: CategoryRepository,
-  ) {}
+  constructor(private readonly categoryRepository: CategoryRepository) {}
 
   async create(createCategoryDto: CreateCategoryDto) {
     // Check if category with same name already exists
@@ -38,7 +37,7 @@ export class CategoryService {
     const categoryData: Partial<Category> = {
       ...createCategoryDto,
       parentId: createCategoryDto.parentId
-        ? (new Types.ObjectId(createCategoryDto.parentId) as any)
+        ? new Types.ObjectId(createCategoryDto.parentId)
         : undefined,
     };
 
@@ -73,7 +72,11 @@ export class CategoryService {
     return await this.categoryRepository.findCategoriesByParent(parentId);
   }
 
-  async update(id: string, updateCategoryDto: UpdateCategoryDto) {
+  async update(
+    id: string,
+    updateCategoryDto: UpdateCategoryDto,
+    user: Partial<IUser>,
+  ) {
     const category = await this.categoryRepository.findOne({
       _id: new Types.ObjectId(id),
     });
@@ -108,7 +111,7 @@ export class CategoryService {
     const updateData: Partial<Category> = {
       ...updateCategoryDto,
       parentId: updateCategoryDto.parentId
-        ? (new Types.ObjectId(updateCategoryDto.parentId) as any)
+        ? new Types.ObjectId(updateCategoryDto.parentId)
         : undefined,
     };
 
@@ -130,7 +133,7 @@ export class CategoryService {
 
     // Check if category has children
     const children = await this.categoryRepository.findAll({
-      parentId: new Types.ObjectId(id) as any,
+      parentId: new Types.ObjectId(id),
     });
 
     if (children && children.length > 0) {
@@ -139,7 +142,6 @@ export class CategoryService {
       );
     }
 
-    return await this.categoryRepository.deleteById(new Types.ObjectId(id) as any);
+    return await this.categoryRepository.deleteById(id);
   }
 }
-

@@ -58,7 +58,7 @@ export abstract class AbstractRepository<T> {
   ) {
     return this.model.updateMany(filter ?? {}, update ?? {}, options ?? {});
   }
-  public async deleteById(id: ObjectId, options?: QueryOptions<T>) {
+  public async deleteById(id: string | ObjectId, options?: QueryOptions<T>) {
     return this.model.findByIdAndDelete(id, options);
   }
   public async deleteMany(

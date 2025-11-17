@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { AbstractRepository } from '../abstract.repository';
@@ -18,7 +18,7 @@ export class ProductRepository extends AbstractRepository<Product> {
     return await this.findAll({ sellerId, isActive: true });
   }
 
-  async findActiveProducts(filter: any = {}) {
+  async findActiveProducts(filter: FilterQuery<Product> = {}) {
     return await this.findAll({ ...filter, isActive: true });
   }
 
@@ -30,4 +30,3 @@ export class ProductRepository extends AbstractRepository<Product> {
     );
   }
 }
-

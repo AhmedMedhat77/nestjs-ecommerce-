@@ -23,4 +23,3 @@ import { UserMongoModule } from '@shared/index';
   exports: [CategoryRepository, CategoryService],
 })
 export class CategoryModule {}
-

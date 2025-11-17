@@ -23,4 +23,3 @@ import { UserMongoModule } from '@shared/index';
   exports: [BrandRepository, BrandService],
 })
 export class BrandModule {}
-

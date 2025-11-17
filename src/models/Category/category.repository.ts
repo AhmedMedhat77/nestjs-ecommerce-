@@ -6,9 +6,7 @@ import { Category } from './category.schema';
 
 @Injectable()
 export class CategoryRepository extends AbstractRepository<Category> {
-  constructor(
-    @InjectModel(Category.name) categoryModel: Model<Category>,
-  ) {
+  constructor(@InjectModel(Category.name) categoryModel: Model<Category>) {
     super(categoryModel);
   }
 
@@ -25,7 +23,7 @@ export class CategoryRepository extends AbstractRepository<Category> {
       return await this.findAll({ parentId: null });
     }
     return await this.findAll({
-      parentId: new Types.ObjectId(parentId) as any,
+      parentId: new Types.ObjectId(parentId),
     });
   }
 
@@ -33,4 +31,3 @@ export class CategoryRepository extends AbstractRepository<Category> {
     return await this.findAll({ parentId: null, isActive: true });
   }
 }
-

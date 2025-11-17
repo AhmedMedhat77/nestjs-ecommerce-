@@ -12,7 +12,6 @@ import { User, UserRepository } from '@models/index';
 import { comparePassword, generateOTP, sendEmail } from 'src/utils';
 import { VerifyOtpDTO } from './dto/verifyOTP.dto';
 import { VerifyFactory } from './factory/verifyFactory';
-import { JwtService } from '@nestjs/jwt';
 import { LoginDTO } from './dto/login.dto';
 import { LoginFactory } from './factory/loginFactory';
 import { TokenService } from 'src/utils/token';

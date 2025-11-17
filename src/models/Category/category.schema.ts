@@ -21,7 +21,12 @@ export class Category {
   @Prop({ required: false, type: String })
   slug?: string;
 
-  @Prop({ required: false, type: Types.ObjectId, ref: 'Category', default: null })
+  @Prop({
+    required: false,
+    type: Types.ObjectId,
+    ref: 'Category',
+    default: null,
+  })
   parentId?: Types.ObjectId;
 
   @Prop({ required: false, type: Boolean, default: true })
@@ -32,4 +37,3 @@ export class Category {
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);
-
